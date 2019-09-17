@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/16 16:06:03 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/17 12:32:00 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void *g_alloc_mem[2] = {NULL, NULL};
 
-static void		write_header(void *ptr, bool freed, unsigned int size, t_malloc_header *prev, t_malloc_header *next)
+static void		write_header(void *ptr, bool free, unsigned int size, t_malloc_header *prev, t_malloc_header *next)
 {
-	((t_malloc_header *)ptr)->freed = freed;
+	((t_malloc_header *)ptr)->free = free;
 	((t_malloc_header *)ptr)->size = size;
 	((t_malloc_header *)ptr)->prev = prev;
 	((t_malloc_header *)ptr)->next = next;
 
-	printf("Write new header @%p, size: %u, prev addr: %p\n", ptr, ((t_malloc_header *)ptr)->size, ((t_malloc_header *)ptr)->prev);
+	printf("Write new header @%p, free: %d, size: %u, prev addr: %p\n", ptr,  ((t_malloc_header *)ptr)->free, ((t_malloc_header *)ptr)->size, ((t_malloc_header *)ptr)->prev);
 }
 
 static int		init_page_region(int count, size_t pagesize, size_t header_size, int g_alloc_mem_index)
@@ -48,8 +48,8 @@ static int		init_page_region(int count, size_t pagesize, size_t header_size, int
 
 static int 		init_alloc_mem(size_t pagesize)
 {
-	init_page_region(TINY_REGION_PAGE_COUNT, pagesize, sizeof(t_malloc_header), 0);
-	init_page_region(SMALL_REGION_PAGE_COUNT, pagesize, sizeof(t_malloc_header), 1);
+	init_page_region(TINY_REGION_PAGE_COUNT, pagesize * TINY_PAGE_SIZE, sizeof(t_malloc_header), 0);
+	init_page_region(SMALL_REGION_PAGE_COUNT, pagesize * SMALL_PAGE_SIZE, sizeof(t_malloc_header), 1);
 	return 0;
 }
 
@@ -60,16 +60,15 @@ static void 	*reserve_page_mem(size_t size)
 
 	page = g_alloc_mem[size > TINY_MAX_SIZE];
 	cur_pos = (t_malloc_header *)page;
+
 	while (cur_pos)
 	{
-		printf("Allocation %p - size %u - prev: %p - next: %p\n", cur_pos, cur_pos->size, cur_pos->prev, cur_pos->next);
-		if (cur_pos->freed == true && \
+		printf("Allocation %p - size %u - free: %d - prev: %p - next: %p\n", cur_pos, cur_pos->size, cur_pos->free, cur_pos->prev, cur_pos->next);
+		if (cur_pos->free == true && \
 			cur_pos->size > sizeof(t_malloc_header) + size)
 		{
-			cur_pos->freed = false;
-			cur_pos->next = cur_pos + size;
-			write_header(cur_pos + size, false, cur_pos->size - size - sizeof(t_malloc_header), cur_pos, NULL);
-			cur_pos->size = size;
+			write_header(cur_pos + sizeof(t_malloc_header) + size, true, cur_pos->size - size - sizeof(t_malloc_header), cur_pos, cur_pos->next);
+			write_header(cur_pos, false, size, cur_pos->prev, cur_pos + sizeof(t_malloc_header) + size);
 			return cur_pos + sizeof(t_malloc_header);
 		}
 		cur_pos = cur_pos->next;
@@ -93,7 +92,7 @@ void			*ft_malloc(size_t size)
 		return reserve_page_mem(size);
 	}
 	else
-		if ((addr = mmap(NULL, pagesize, PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) \
+		if ((addr = mmap(NULL, size, PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) \
 			== MAP_FAILED)
 			return NULL;
 	printf("mallocated %zu at %p\n", size, addr);

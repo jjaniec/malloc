@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/08/26 20:52:23 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/09/17 12:38:17 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,13 +41,12 @@ LIBFT = $(addprefix $(LIBFT_DIR),"/libft.a")
 
 ###### COMPILATION ######
 CC = gcc
-CFLAGS = -Wall -Wextra -g -D_GNU_SOURCE -std=c11 # -Werror -O3
+CFLAGS = -Wall -Wextra -g -D_GNU_SOURCE -std=c11 -fPIC # -Werror -O3
 ADDITIONAL_FLAGS = # Used to know when running on travis-ci
 CFLAGS += $(ADDITIONAL_FLAGS)
 IFLAGS = -I./libft -I./$(INCLUDES_DIR)
 LFLAGS = -L./libft/ -lft
 LDFLAGS = -fPIC -shared
-# LINUX_FLAGS = -fPIC -std=c99 -Wno-pointer-arith -Wno-pointer-to-int-cast -Wno-type-limits -Wno-cast-function-type
 
 ###### FLAGS ######
 #DEV_FLAGS = -fsanitize=address -fno-omit-frame-pointer
