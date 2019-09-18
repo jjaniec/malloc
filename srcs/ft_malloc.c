@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/17 12:32:00 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/17 13:22:00 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,14 @@ void			*ft_malloc(size_t size)
 		return reserve_page_mem(size);
 	}
 	else
-		if ((addr = mmap(NULL, size, PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) \
-			== MAP_FAILED)
+		if ((addr = mmap(NULL, size + sizeof(t_malloc_header), \
+			PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) == MAP_FAILED)
 			return NULL;
+		else
+		{
+			write_header(addr, false, size, NULL, NULL);
+			addr = addr + sizeof(t_malloc_header);
+		}
 	printf("mallocated %zu at %p\n", size, addr);
 	return addr;
 }

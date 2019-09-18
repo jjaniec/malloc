@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/17 12:16:07 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/18 15:42:49 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 // mmap parameters for pages allocations
 #define PAGE_MMAP_PROT PROT_READ | PROT_WRITE | PROT_EXEC
 #define PAGE_MMAP_FLAGS MAP_ANON | MAP_PRIVATE
+
+//
+#define SHOW_ALLOC_MEM_BYTES_PER_LINE	16
+#define SHOW_ALLOC_MEM_FREE_BLOCKS false
 
 typedef struct s_malloc_header
 {
