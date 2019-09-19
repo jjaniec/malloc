@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/09/18 15:39:51 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/09/18 19:41:31 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ TESTS_EXEC = $(addprefix $(LNK),.tests)
 SRC_NAME = ft_malloc.c \
 			ft_free.c \
 			ft_realloc.c \
-			show_alloc_mem.c
+			show_alloc_mem.c \
+			ft_free_all.c
 
 INCLUDES_NAME = malloc.h
 

@@ -6,13 +6,13 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/17 13:22:00 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 14:10:48 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-void *g_alloc_mem[2] = {NULL, NULL};
+t_malloc_header *g_alloc_mem[2] = {NULL, NULL};
 
 static void		write_header(void *ptr, bool free, unsigned int size, t_malloc_header *prev, t_malloc_header *next)
 {
