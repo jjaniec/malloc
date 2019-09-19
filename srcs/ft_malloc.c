@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 14:10:48 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 20:20:00 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ static void		write_header(void *ptr, bool free, unsigned int size, t_malloc_head
 	((t_malloc_header *)ptr)->prev = prev;
 	((t_malloc_header *)ptr)->next = next;
 
-	printf("Write new header @%p, free: %d, size: %u, prev addr: %p\n", ptr,  ((t_malloc_header *)ptr)->free, ((t_malloc_header *)ptr)->size, ((t_malloc_header *)ptr)->prev);
+	printf("Write new header @%p, free: %d, size: %u, prev addr: %p- alloc type: %d\n", \
+		ptr, ((t_malloc_header *)ptr)->free, \
+		((t_malloc_header *)ptr)->size, ((t_malloc_header *)ptr)->prev, \
+		get_alloc_type(ptr, getpagesize(), sizeof(t_malloc_header)));
 }
 
 static int		init_page_region(int count, size_t pagesize, size_t header_size, int g_alloc_mem_index)
@@ -48,9 +51,12 @@ static int		init_page_region(int count, size_t pagesize, size_t header_size, int
 
 static int 		init_alloc_mem(size_t pagesize)
 {
-	init_page_region(TINY_REGION_PAGE_COUNT, pagesize * TINY_PAGE_SIZE, sizeof(t_malloc_header), 0);
-	init_page_region(SMALL_REGION_PAGE_COUNT, pagesize * SMALL_PAGE_SIZE, sizeof(t_malloc_header), 1);
-	return 0;
+	return (
+		init_page_region(\
+			TINY_REGION_PAGE_COUNT, pagesize * TINY_PAGE_SIZE, sizeof(t_malloc_header), 0) || \
+		init_page_region(\
+			SMALL_REGION_PAGE_COUNT, pagesize * SMALL_PAGE_SIZE, sizeof(t_malloc_header), 1)
+	);
 }
 
 static void 	*reserve_page_mem(size_t size)
@@ -91,15 +97,14 @@ void			*ft_malloc(size_t size)
 			return NULL;
 		return reserve_page_mem(size);
 	}
+	if ((addr = mmap(NULL, size + sizeof(t_malloc_header), \
+		PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) == MAP_FAILED)
+		return NULL;
 	else
-		if ((addr = mmap(NULL, size + sizeof(t_malloc_header), \
-			PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) == MAP_FAILED)
-			return NULL;
-		else
-		{
-			write_header(addr, false, size, NULL, NULL);
-			addr = addr + sizeof(t_malloc_header);
-		}
+	{
+		write_header(addr, false, size, NULL, NULL);
+		addr = addr + sizeof(t_malloc_header);
+	}
 	printf("mallocated %zu at %p\n", size, addr);
 	return addr;
 }

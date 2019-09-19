@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 13:47:07 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 19:50:43 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 //
 # define SHOW_ALLOC_MEM_BYTES_PER_LINE	16
 # define SHOW_ALLOC_MEM_FREE_BLOCKS false
+# define DISABLE_SHOW_ALLOC_DATA true
 
 typedef						struct s_malloc_header
 {
@@ -53,5 +54,6 @@ void						*ft_malloc(size_t size);
 void						*ft_realloc(void *ptr, size_t size);
 void						show_alloc_mem(void);
 void						ft_free_all(void);
+int							get_alloc_type(t_malloc_header *alloc_header, size_t pagesize, size_t headersize);
 
 #endif
