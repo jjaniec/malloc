@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:14:11 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 14:10:58 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 19:50:39 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	show_alloc_mem_list(char *type, t_malloc_header *start)
 	while (start)
 	{
 		printf("%s block of size %u @%p, free: %d\n", type, start->size, start, start->free);
-		if (SHOW_ALLOC_MEM_FREE_BLOCKS || !start->free)
+		if (!DISABLE_SHOW_ALLOC_DATA && (SHOW_ALLOC_MEM_FREE_BLOCKS || !start->free))
 		{
 			print_alloc_data(start);
 			fflush(stdout);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/19 20:03:32 by jjaniec           #+#    #+#             */
+/*   Updated: 2019/09/19 20:25:47 by jjaniec          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 #include <tap.h>
 
@@ -38,12 +50,13 @@ int			main()
 	ft_memset(tmp, 'A', TINY_MAX_SIZE / 2 - 1);
 	tmp[TINY_MAX_SIZE / 2] = '\0';
 	ok(read_str_char(tmp, 'A') == 0, "Malloc - Tiny 3 - String Assignation on different page");
+	// ft_free(tmp);
 
-	// tmp = ft_malloc(SMALL_MAX_SIZE / 2 + 1);
-	// ok(NULL != tmp, "Malloc - Small 1 - Basic allocation");
-	// ft_memset(tmp, 'B', SMALL_MAX_SIZE / 2 - 1);
-	// tmp[SMALL_MAX_SIZE / 2] = '\0';
-	// ok(read_str_char(tmp, 'B') == 0, "Malloc - Small 1 - String assignation");
+	tmp = ft_malloc(SMALL_MAX_SIZE / 2 + 1);
+	ok(NULL != tmp, "Malloc - Small 1 - Basic allocation");
+	ft_memset(tmp, 'B', SMALL_MAX_SIZE / 2 - 1);
+	tmp[SMALL_MAX_SIZE / 2] = '\0';
+	ok(read_str_char(tmp, 'B') == 0, "Malloc - Small 1 - String assignation");
 
 	// tmp = ft_malloc(SMALL_MAX_SIZE * 2 + 1);
 	// ok(NULL != tmp, "Malloc - Big 1 - Basic allocation");
