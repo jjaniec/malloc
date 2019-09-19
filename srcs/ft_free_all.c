@@ -6,13 +6,13 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 19:56:16 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 23:51:47 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-extern t_malloc_header	*g_alloc_mem[2];
+extern t_malloc_header	*g_alloc_mem[3];
 
 void		ft_free_all(void)
 {
@@ -21,7 +21,7 @@ void		ft_free_all(void)
 	void				*tmp;
 
 	i = -1;
-	while (++i < 2)
+	while (++i < 3)
 	{
 		printf("FT_FREE_ALL g_alloc_mem[%d] %p %p\n", i, g_alloc_mem[i], g_alloc_mem[i] + sizeof(t_malloc_header));
 		while (1)

@@ -6,13 +6,13 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 20:02:35 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 23:56:22 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-extern t_malloc_header *g_alloc_mem[2];
+extern t_malloc_header *g_alloc_mem[3];
 
 /*
 ** Returns 1 if two headers are not next to each other and on the same mmap() page,
@@ -41,16 +41,16 @@ static t_malloc_header	*search_alloc_header(void *ptr, t_malloc_header *start)
 	return NULL;
 }
 
-static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t headersize)
+static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t headersize, int alloc_type)
 {
-	int		alloc_type;
+	// int		alloc_type;
 
 	if (start_header->prev)
 		start_header->prev->next = start_header->next;
 	if (start_header->next)
 		start_header->next->prev = start_header->prev;
-	alloc_type = get_alloc_type(start_header, pagesize, headersize);
-	printf("Unmap %p size: %u alloc_mem start header: %p\n", start_header, start_header->size, g_alloc_mem[alloc_type]);
+	// alloc_type = get_alloc_type(start_header, pagesize, headersize);
+	printf("Unmap %p size: %zu - type: %d alloc_mem start header: %p\n", start_header, start_header->size, alloc_type, g_alloc_mem[alloc_type]);
 	if (g_alloc_mem[alloc_type] == start_header)
 	{
 		g_alloc_mem[alloc_type] = start_header->prev ? start_header->prev : start_header->next;
@@ -59,13 +59,13 @@ static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t 
 	return munmap(start_header, start_header->size);
 }
 
-static void		defrag(t_malloc_header *start, size_t pagesize, size_t headersize)
+static void		defrag(t_malloc_header *start, size_t pagesize, size_t headersize, int alloc_type)
 {
 	if (start && start->free == true)
 	{
 		if (start->prev && start->prev->free == true && \
 			!follows_on_same_page(start->prev, start))
-			return defrag(start->prev, pagesize, headersize);
+			return defrag(start->prev, pagesize, headersize, alloc_type);
 		while (start->next && start->next->free == true && \
 			!follows_on_same_page(start, start->next))
 		{
@@ -74,9 +74,10 @@ static void		defrag(t_malloc_header *start, size_t pagesize, size_t headersize)
 			if (start->next)
 				start->next->prev = start;
 		}
-		if (start->size == pagesize * TINY_PAGE_SIZE - headersize || \
+		if (alloc_type == 2 || \
+			start->size == pagesize * TINY_PAGE_SIZE - headersize || \
 			start->size == pagesize * SMALL_PAGE_SIZE - headersize)
-			unmap_page(start, pagesize, headersize);
+			unmap_page(start, pagesize, headersize, alloc_type);
 		return ;
 	}
 }
@@ -86,19 +87,21 @@ void 					ft_free(void *ptr)
 	t_malloc_header		*alloc_header;
 	size_t				pagesize;
 	size_t				headersize;
+	int					i;
 
 	if (!ptr)
 		return ;
 	printf("g_mem_alloc[0]: %p - [1]: %p\n", g_alloc_mem[0], g_alloc_mem[1]);
 	pagesize = getpagesize();
 	headersize = sizeof(t_malloc_header);
-	alloc_header = search_alloc_header(ptr, g_alloc_mem[0]);
-	if (!alloc_header)
-		alloc_header = search_alloc_header(ptr, g_alloc_mem[1]);
+	i = -1;
+	alloc_header = NULL;
+	while (++i < 3 && !alloc_header)
+		alloc_header = search_alloc_header(ptr, g_alloc_mem[i]);
 	if (alloc_header)
 	{
 		alloc_header->free = true;
-		printf("Found block %p - free %d - size: %d - next: %p - prev: %p\n", ptr, alloc_header->free, alloc_header->size, alloc_header->next, alloc_header->prev);
-		defrag(alloc_header, pagesize, headersize);
+		printf("Found block %p - type: %d - free %d - size: %zu - next: %p - prev: %p\n", ptr, i, alloc_header->free, alloc_header->size, alloc_header->next, alloc_header->prev);
+		defrag(alloc_header, pagesize, headersize, i - 1);
 	}
 }

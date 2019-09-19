@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 19:50:43 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/09/19 22:24:31 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/mman.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <errno.h>
 
 // Allocations max size per allocation type
 # define TINY_MAX_SIZE 256
@@ -44,7 +45,7 @@ typedef						struct s_malloc_header
 {
 	bool					free : 1;
 	char					_unused[3];
-	unsigned int			size;
+	size_t					size;
 	struct s_malloc_header	*prev;
 	struct s_malloc_header	*next;
 }							t_malloc_header;
