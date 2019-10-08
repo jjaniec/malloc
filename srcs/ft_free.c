@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 23:56:22 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/08 16:00:27 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ static int				follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2)
 
 static t_malloc_header	*search_alloc_header(void *ptr, t_malloc_header *start)
 {
-	// return ptr - sizeof(t_malloc_header);
 	while (start)
 	{
-		printf("Search %p - %p - eq: %d\n", ptr, start + sizeof(t_malloc_header), start + sizeof(t_malloc_header) == ptr);
 		if (start + sizeof(t_malloc_header) == ptr)
 			return start;
 		start = start->next;
@@ -43,19 +41,12 @@ static t_malloc_header	*search_alloc_header(void *ptr, t_malloc_header *start)
 
 static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t headersize, int alloc_type)
 {
-	// int		alloc_type;
-
 	if (start_header->prev)
 		start_header->prev->next = start_header->next;
 	if (start_header->next)
 		start_header->next->prev = start_header->prev;
-	// alloc_type = get_alloc_type(start_header, pagesize, headersize);
-	printf("Unmap %p size: %zu - type: %d alloc_mem start header: %p\n", start_header, start_header->size, alloc_type, g_alloc_mem[alloc_type]);
 	if (g_alloc_mem[alloc_type] == start_header)
-	{
 		g_alloc_mem[alloc_type] = start_header->prev ? start_header->prev : start_header->next;
-		printf("Updated header %d to %p\n", alloc_type, g_alloc_mem[alloc_type]);
-	}
 	return munmap(start_header, start_header->size);
 }
 
@@ -91,7 +82,6 @@ void 					ft_free(void *ptr)
 
 	if (!ptr)
 		return ;
-	printf("g_mem_alloc[0]: %p - [1]: %p\n", g_alloc_mem[0], g_alloc_mem[1]);
 	pagesize = getpagesize();
 	headersize = sizeof(t_malloc_header);
 	i = -1;
@@ -101,7 +91,6 @@ void 					ft_free(void *ptr)
 	if (alloc_header)
 	{
 		alloc_header->free = true;
-		printf("Found block %p - type: %d - free %d - size: %zu - next: %p - prev: %p\n", ptr, i, alloc_header->free, alloc_header->size, alloc_header->next, alloc_header->prev);
 		defrag(alloc_header, pagesize, headersize, i - 1);
 	}
 }

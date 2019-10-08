@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/09/19 22:24:31 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/08 15:21:03 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <errno.h>
+# include <stdint.h>
 
 // Allocations max size per allocation type
 # define TINY_MAX_SIZE 256
@@ -33,7 +34,7 @@
 # define SMALL_REGION_PAGE_COUNT 1
 
 // mmap parameters for pages allocations
-# define PAGE_MMAP_PROT PROT_READ | PROT_WRITE | PROT_EXEC
+# define PAGE_MMAP_PROT PROT_READ | PROT_WRITE
 # define PAGE_MMAP_FLAGS MAP_ANON | MAP_PRIVATE
 
 //
@@ -52,6 +53,7 @@ typedef						struct s_malloc_header
 
 void						ft_free(void *ptr);
 void						*ft_malloc(size_t size);
+void						*ft_calloc(size_t nmemb, size_t size);
 void						*ft_realloc(void *ptr, size_t size);
 void						show_alloc_mem(void);
 void						ft_free_all(void);
