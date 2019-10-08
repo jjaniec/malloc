@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_all.c                                      :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/08 16:00:44 by jjaniec          ###   ########.fr       */
+/*   Created: 2019/10/06 22:07:15 by jjaniec           #+#    #+#             */
+/*   Updated: 2019/10/08 15:52:53 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-extern t_malloc_header	*g_alloc_mem[3];
-
-void		ft_free_all(void)
+void		*ft_calloc(size_t nmemb, size_t size)
 {
-	int					i;
-	t_malloc_header		*ptr;
-	void				*tmp;
+	void 	*ptr;
 
-	i = -1;
-	while (++i < 3)
-	{
-		while (1)
-		{
-			tmp = g_alloc_mem[i];
-			if (!tmp)
-				break ;
-			ptr = tmp;
-			while (ptr && ptr->free && ptr->next)
-				ptr = ptr->next;
-			ft_free(ptr + sizeof(t_malloc_header));
-		}
-	}
+	if (nmemb == 0 || size == 0 || SIZE_MAX / nmemb <= size)
+		return NULL;
+	if ((ptr = ft_malloc(nmemb * size)))
+		ft_bzero(ptr, nmemb * size);
+	return ptr;
 }
