@@ -6,7 +6,10 @@ before_install:
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update && wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && unzip build-wrapper-linux-x86.zip && cp build-wrapper-linux-x86/libinterceptor-x86_64.so build-wrapper-linux-x86/libinterceptor-haswell.so;
     else brew update && wget https://sonarcloud.io/static/cpp/build-wrapper-macosx-x86.zip && unzip build-wrapper-macosx-x86.zip;
     fi;
+before_script:
+  - ulimit -Sv 500000
 after_script:
+  - ulimit -Sv unlimited
   - if [ $TRAVIS_OS_NAME = linux ]; then echo " --- Leaks --- " && cat Leaks.log | tail -n 20 | grep -A5 'LEAK SUMMARY' && echo " ---Leaks Full log $(cat Leaks.log | curl -F 'f:1=<-' ix.io)"; fi;
   - bash <(curl -s https://codecov.io/bash) -F unittests
   - sonar-scanner -X

@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 20:03:32 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/08 16:22:20 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/08 17:30:34 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,27 @@ static void calloc_tests()
 	ok(NULL == ft_calloc(1, 0), "Calloc - size == 0");
 }
 
+static void	realloc_tests()
+{
+	char	*tmp;
+
+	tmp = ft_calloc(6, sizeof(char));
+	ft_memset(tmp, 'B', 5);
+	tmp[5] = '\0';
+	ft_realloc(tmp, sizeof(char) * 3);
+	tmp[2] = '\0';
+	ok(tmp[0] == 'B', "Realloc - Basic 1 1");
+	ok(tmp[1] == 'B', "Realloc - Basic 1 2");
+	ok(tmp[2] == '\0', "Realloc - Basic 1 3");
+	ft_realloc(tmp, sizeof(char) * 50);
+	tmp[49] = '\0';
+	tmp[30] = 'B';
+	ok(tmp[0] == 'B', "Realloc - Basic 1 4");
+	ok(tmp[30] == 'B', "Realloc - Basic 1 5");
+	ok(tmp[2] == '\0', "Realloc - Basic 1 6");
+	ok(tmp[49] == '\0', "Realloc - Basic 1 7");
+}
+
 int			main()
 {
 	basic_tests();
@@ -163,6 +184,9 @@ int			main()
 	ft_free_all();
 
 	calloc_tests();
+	ft_free_all();
+
+	realloc_tests();
 	ft_free_all();
 
 	mem_saturation_test(TINY_MAX_SIZE / 2, true);
