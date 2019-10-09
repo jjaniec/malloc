@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/08 16:00:44 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/09 23:55:38 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		ft_free_all(void)
 			ptr = tmp;
 			while (ptr && ptr->free && ptr->next)
 				ptr = ptr->next;
-			ft_free(ptr + sizeof(t_malloc_header));
+			free(ptr + sizeof(t_malloc_header));
 		}
 	}
 }

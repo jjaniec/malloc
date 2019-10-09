@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/08 15:21:03 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/10 00:21:11 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ typedef						struct s_malloc_header
 	struct s_malloc_header	*next;
 }							t_malloc_header;
 
-void						ft_free(void *ptr);
-void						*ft_malloc(size_t size);
-void						*ft_calloc(size_t nmemb, size_t size);
-void						*ft_realloc(void *ptr, size_t size);
+void						free(void *ptr);
+void						*malloc(size_t size);
+void						*calloc(size_t nmemb, size_t size);
+void						*realloc(void *ptr, size_t size);
 void						show_alloc_mem(void);
+t_malloc_header				*get_alloc_header(void *ptr, int *alloc_mem_index);
+void 						free_alloc(t_malloc_header *alloc_header, int alloc_mem_index);
 void						ft_free_all(void);
 int							get_alloc_type(t_malloc_header *alloc_header, size_t pagesize, size_t headersize);
 

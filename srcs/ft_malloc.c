@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/08 15:59:46 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/10 00:22:58 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void 	*reserve_page_mem(size_t size, size_t headersize, int alloc_type)
 	return NULL;
 }
 
-void			*ft_malloc(size_t size)
+void			*malloc(size_t size)
 {
 	size_t	pagesize;
 	size_t	headersize;
@@ -66,7 +66,13 @@ void			*ft_malloc(size_t size)
 	int		alloc_type;
 	void	*page;
 
+	// ft_putstr("Malloc ");
+	// ft_putnbr(size);
+	// ft_putchar('\n');
+
 	pagesize = getpagesize();
+	while (size % 16)
+		size++;
 	headersize = sizeof(t_malloc_header);
 	alloc_type = 0 + (size > TINY_MAX_SIZE) + (size > SMALL_MAX_SIZE);
 	if (size <= SMALL_MAX_SIZE && (addr = reserve_page_mem(size, headersize, alloc_type)))
