@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/10/09 21:55:56 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/10/14 18:31:54 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_NAME = ft_malloc.c \
 			ft_realloc.c \
 			show_alloc_mem.c \
 			ft_free_all.c \
+			ft_putnbr_base.c \
 			get_alloc_type.c
 
 INCLUDES_NAME = malloc.h
