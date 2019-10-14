@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/10 00:15:23 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/14 16:58:56 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ extern t_malloc_header *g_alloc_mem[3];
 ** otherwise return 0
 */
 
-static int				follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2)
+static int follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2)
 {
-	if (!(ptr && ptr2 && ptr->next) || \
-		sizeof(t_malloc_header) + ptr->size == (long unsigned int)getpagesize() * TINY_PAGE_SIZE || \
+	if (!(ptr && ptr2 && ptr->next) ||
+		sizeof(t_malloc_header) + ptr->size == (long unsigned int)getpagesize() * TINY_PAGE_SIZE ||
 		sizeof(t_malloc_header) + ptr->size == (long unsigned int)getpagesize() * SMALL_PAGE_SIZE)
 		return 1;
-	return (!(ptr + ptr->size + sizeof(t_malloc_header) == ptr2));
+	return (!((void *)ptr + ptr->size + sizeof(t_malloc_header) == (void *)ptr2));
 }
 
-static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t headersize, int alloc_type)
+static int unmap_page(t_malloc_header *start_header, int alloc_type)
 {
 	if (start_header->prev)
 		start_header->prev->next = start_header->next;
@@ -39,38 +39,43 @@ static int				unmap_page(t_malloc_header *start_header, size_t pagesize, size_t 
 	return munmap(start_header, start_header->size);
 }
 
-static void		defrag(t_malloc_header *start, size_t pagesize, size_t headersize, int alloc_type)
+static void defrag(t_malloc_header *start, size_t pagesize, size_t headersize, int alloc_type)
 {
 	if (start && start->free == true)
 	{
-		if (start->prev && start->prev->free == true && \
+		if (start->prev && start->prev->free == true &&
 			!follows_on_same_page(start->prev, start))
+		{
+			ft_putstr("defrag: Move to previous\n");
 			return defrag(start->prev, pagesize, headersize, alloc_type);
-		while (start->next && start->next->free == true && \
-			!follows_on_same_page(start, start->next))
+		}
+		while (start->next && start->next->free == true &&
+			   !follows_on_same_page(start, start->next))
 		{
 			start->size += start->next->size + headersize;
 			start->next = start->next->next;
 			if (start->next)
 				start->next->prev = start;
 		}
-		if (alloc_type == 2 || \
-			start->size == pagesize * TINY_PAGE_SIZE - headersize || \
+		if (alloc_type == 2 ||
+			start->size == pagesize * TINY_PAGE_SIZE - headersize ||
 			start->size == pagesize * SMALL_PAGE_SIZE - headersize)
-			unmap_page(start, pagesize, headersize, alloc_type);
-		return ;
+			unmap_page(start, alloc_type);
+		// else
+		// 	printf("No unmap page - startsize: %zu - pagesize tiny: %zu - headersize: %zu\n", start->size, TINY_PAGE_SIZE * pagesize, headersize);
+		return;
 	}
 }
 
-void 					free_alloc(t_malloc_header *alloc_header, int alloc_mem_index)
+void free_alloc(t_malloc_header *alloc_header, int alloc_mem_index)
 {
 	if (!alloc_header)
-		return ;
+		return;
 	// ft_putstr("Free_alloc size: ");
 	// ft_putnbr(alloc_header->size);
 	// ft_putstr("\n");
 	alloc_header->free = true;
 	// if (alloc_mem_index == -1)
-		// alloc_mem_index = 
+	// alloc_mem_index =
 	defrag(alloc_header, getpagesize(), sizeof(t_malloc_header), alloc_mem_index);
 }

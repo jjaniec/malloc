@@ -6,19 +6,19 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:07:15 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/10 00:14:52 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/14 16:38:04 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-void		*calloc(size_t nmemb, size_t size)
+void *calloc(size_t nmemb, size_t size)
 {
-	void 	*ptr;
+	void *ptr;
 
-	// ft_putstr("Calloc ");
-	// ft_putnbr((unsigned long) nmemb * size);
-	// ft_putchar('\n');
+	ft_putstr("Calloc ");
+	ft_putnbr((unsigned long)nmemb * size);
+	ft_putchar('\n');
 
 	if (nmemb == 0 || size == 0 || SIZE_MAX / nmemb <= size)
 		return NULL;

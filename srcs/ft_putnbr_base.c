@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 16:40:52 by jjaniec          ###   ########.fr       */
+/*   Created: 2019/10/14 12:17:29 by jjaniec           #+#    #+#             */
+/*   Updated: 2019/10/14 13:57:47 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-extern t_malloc_header *g_alloc_mem[3];
-
-void free(void *ptr)
+void ft_putnbr_base(int n, unsigned int base)
 {
-	t_malloc_header *alloc_header;
-	int i;
+	char *charset = "0123456789ABCDEF";
 
-	// printf("Free %p\n", ptr);
-	ft_putstr("Free - 0x");
-	ft_putnbr_base((unsigned long)ptr, 16);
-	ft_putchar('\n');
-	// show_alloc_mem();
-
-	if (!ptr)
-		return;
-	i = 0;
-	alloc_header = get_alloc_header(ptr, &i);
-	if (!alloc_header)
-		ft_putstr("Free: header not found\n");
-	free_alloc(alloc_header, i);
+	if (n < 0)
+	{
+		ft_putchar('-');
+		n = -n;
+	}
+	if (n < (int)base)
+		ft_putchar(charset[n]);
+	if (n >= (int)base)
+	{
+		ft_putnbr(n / base);
+		ft_putchar(charset[n % base]);
+	}
 }
