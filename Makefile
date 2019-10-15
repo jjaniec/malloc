@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/10/14 19:26:47 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/10/15 14:20:46 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,13 @@ TESTS_EXEC = $(addprefix $(LNK),.tests)
 SRC_NAME = ft_malloc.c \
 			ft_calloc.c \
 			ft_free.c \
+			ft_realloc.c \
 			free_alloc.c \
 			get_alloc_header.c \
-			ft_realloc.c \
 			show_alloc_mem.c \
 			ft_free_all.c \
 			ft_putnbr_base.c \
+			write_header.c \
 			get_alloc_type.c
 
 INCLUDES_NAME = malloc.h
@@ -48,7 +49,7 @@ LIBFT = $(addprefix $(LIBFT_DIR),"/libft.a")
 
 ###### COMPILATION ######
 CC = gcc
-CFLAGS = -Wall -Wextra -g -fsanitize=address -D_GNU_SOURCE -std=c11 -fPIC # -Werror -O3
+CFLAGS = -Wall -Wextra -g -D_GNU_SOURCE -std=c11 -fPIC # -Werror -O3
 ADDITIONAL_FLAGS = # Used to know when running on travis-ci
 CFLAGS += $(ADDITIONAL_FLAGS)
 IFLAGS = -I./libft -I./$(INCLUDES_DIR)
