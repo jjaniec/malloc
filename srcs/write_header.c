@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_all.c                                      :+:      :+:    :+:   */
+/*   write_header.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:15:17 by jjaniec          ###   ########.fr       */
+/*   Created: 2019/10/15 14:05:21 by jjaniec           #+#    #+#             */
+/*   Updated: 2019/10/15 14:17:04 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
-extern t_malloc_header *g_alloc_mem[3];
-
-void		ft_free_all(void)
+void		write_header(void *ptr, bool free, size_t size, \
+					t_malloc_header *prev, t_malloc_header *next)
 {
-	t_malloc_header	*ptr;
-	int				i;
-	void			*tmp;
-
-	// printf("FT FREE ALL %p - %p - %p\n", g_alloc_mem[0], g_alloc_mem[1], g_alloc_mem[2]);
-	i = -1;
-	while (++i < 3)
-	{
-		while (1)
-		{
-			tmp = g_alloc_mem[i];
-			if (!tmp)
-				break ;
-			ptr = tmp;
-			while (ptr && ptr->free && ptr->next)
-				ptr = ptr->next;
-			free_alloc(ptr, i);
-		}
-	}
+	((t_malloc_header *)ptr)->free = free;
+	((t_malloc_header *)ptr)->size = size;
+	((t_malloc_header *)ptr)->prev = prev;
+	((t_malloc_header *)ptr)->next = next;
 }
