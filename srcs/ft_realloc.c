@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:39:01 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 18:28:44 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:13:44 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,14 @@ static void *resize_alloc(t_malloc_header *alloc, size_t new_size, size_t header
 void *realloc(void *ptr, size_t size)
 {
 	t_malloc_header *alloc_header;
-	int		old_alloc_type;
-	int		new_alloc_type;
-	void	*r;
-	int		i;
+	int				old_alloc_type;
+	int				new_alloc_type;
+	void			*r;
+	int				i;
 
 	ft_putstr("Realloc new size: ");
 	ft_putnbr(size);
 	ft_putchar('\n');
-
-	// show_alloc_mem();
-
 	while (size % 16)
 		size++;
 	new_alloc_type = 0 + (size > TINY_MAX_SIZE) + (size > SMALL_MAX_SIZE);
@@ -68,7 +65,6 @@ void *realloc(void *ptr, size_t size)
 		free(ptr);
 		return (NULL);
 	}
-
 	// if (!(alloc))
 	// {
 	// 	ft_putstr("Oopsie 1 - type: ");
@@ -86,23 +82,17 @@ void *realloc(void *ptr, size_t size)
 		ft_putnbr(alloc_header->size);
 		ft_putstr("\n");
 	}
-	else
-	{
-		ft_putstr("Oppsie\n");
-	}
-
 	if ((r = malloc(size)) && alloc_header)
 	{
 		old_alloc_type = 0 + (alloc_header->size > TINY_MAX_SIZE) + (alloc_header->size > SMALL_MAX_SIZE);
 		ft_memcpy(r, ptr, alloc_header->size);
-		alloc_header->free = true;
-		if (new_alloc_type == old_alloc_type)
-		{
-			if (alloc_header->next)
-				alloc_header->next->prev = r - sizeof(t_malloc_header);
-			if (alloc_header->prev)
-				alloc_header->prev->next = r - sizeof(t_malloc_header);
-		}
+		// if (new_alloc_type == old_alloc_type)
+		// {
+		// 	if (alloc_header->next)
+		// 		alloc_header->next->prev = r - sizeof(t_malloc_header);
+		// 	if (alloc_header->prev)
+		// 		alloc_header->prev->next = r - sizeof(t_malloc_header);
+		// }
 		free_alloc(alloc_header, i);
 	}
 	return r;

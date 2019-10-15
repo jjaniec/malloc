@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:14:11 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 16:43:35 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:15:41 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,16 @@ static void show_alloc_mem_list(char *type, t_malloc_header *start)
 	{
 		ft_putstr(type);
 		ft_putstr(" block of size: ");
-		ft_putnbr(start->size);
+		ft_putnbr_base((unsigned int)start->size, 10);
 		ft_putstr(" @0x");
 		ft_putnbr_base((unsigned int)start, 16);
 		ft_putstr(" - free: ");
-		ft_putstr((start->free) ? ("true\n") : ("false\n"));
+		ft_putstr((start->free) ? ("true") : ("false"));
+		ft_putstr(" prev: 0x");
+		ft_putnbr_base((unsigned int)start->prev, 16);
+		ft_putstr(" - next: 0x");
+		ft_putnbr_base((unsigned int)start->next, 16);
+		ft_putstr("\n");
 		// printf("%s block of size %zu @%p, free: %d\n", type, start->size, start, start->free);
 		if (!DISABLE_SHOW_ALLOC_DATA && (SHOW_ALLOC_MEM_FREE_BLOCKS || !start->free))
 		{

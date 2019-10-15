@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/10/14 18:31:54 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/10/14 19:26:47 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ LIBFT = $(addprefix $(LIBFT_DIR),"/libft.a")
 
 ###### COMPILATION ######
 CC = gcc
-CFLAGS = -Wall -Wextra -g -D_GNU_SOURCE -std=c11 -fPIC # -Werror -O3
+CFLAGS = -Wall -Wextra -g -fsanitize=address -D_GNU_SOURCE -std=c11 -fPIC # -Werror -O3
 ADDITIONAL_FLAGS = # Used to know when running on travis-ci
 CFLAGS += $(ADDITIONAL_FLAGS)
 IFLAGS = -I./libft -I./$(INCLUDES_DIR)
@@ -56,7 +56,7 @@ LFLAGS = -L./libft/ -lft
 LDFLAGS = -fPIC -shared
 
 ###### FLAGS ######
-#DEV_FLAGS = -fsanitize=address -fno-omit-frame-pointer
+DEV_FLAGS = #-fsanitize=address -fno-omit-frame-pointer
 CFLAGS += $(DEV_FLAGS)
 COVERAGE_CFLAGS = -coverage -O0
 LIBTAP_FLAGS = -I$(LIBTAP_DIR)
@@ -104,7 +104,7 @@ $(LNK): $(NAME)
 # TESTS RULES
 
 $(TESTS_EXEC): $(LIBFT) $(OBJ) $(TESTS_OBJ)
-	@$(CC) -c $(IFLAGS) $(addprefix $(LIBTAP_DIR),"/tap.c") -o $(addprefix $(LIBTAP_DIR),"/tap.o")
+	@$(CC) $(CFLAGS) -c $(IFLAGS) $(addprefix $(LIBTAP_DIR),"/tap.c") -o $(addprefix $(LIBTAP_DIR),"/tap.o")
 	@$(CC) $(CFLAGS) $(TESTS_SRCS_OBJS_NAME) $(LIBFT) -o $(TESTS_EXEC) $(LFLAGS)
 
 tests: CFLAGS += $(COVERAGE_CFLAGS) $(LIBTAP_FLAGS)

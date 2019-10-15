@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 20:03:32 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 16:05:49 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:11:13 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,22 @@ static void basic_tests()
 	tmp[SMALL_MAX_SIZE / 2] = '\0';
 	ok(read_str_char(tmp, 'B') == 0, "Malloc - Basic 4 - Basic small assignation");
 
-	tmp = ft_malloc(SMALL_MAX_SIZE / 2 + 1);
+	tmp = ft_malloc(42000 + 1);
 	ok(NULL != tmp, "Malloc - Basic 5 - Basic big allocation");
-	ft_memset(tmp, 'B', SMALL_MAX_SIZE / 2 - 1);
-	tmp[SMALL_MAX_SIZE / 2] = '\0';
+	ft_memset(tmp, 'B', 42000);
+	tmp[42000] = '\0';
 	ok(read_str_char(tmp, 'B') == 0, "Malloc - Basic 6 - Basic big assignation");
 
-	ok(ft_malloc(0) != NULL, "Malloc - Basic 7 - Malloc(0)");
-	ok(ft_malloc(293828371837313123) == NULL, "Malloc - Basic 8 - Malloc with too large number");
+	show_alloc_mem();
+
+	tmp = ft_malloc(SMALL_MAX_SIZE * 2 + 1);
+	ok(NULL != tmp, "Malloc - Basic 7 - Basic big allocation 2");
+	ft_memset(tmp, 'B', SMALL_MAX_SIZE * 2 - 1);
+	tmp[SMALL_MAX_SIZE * 2] = '\0';
+	ok(read_str_char(tmp, 'B') == 0, "Malloc - Basic 8 - Basic big assignation 2");
+
+	ok(ft_malloc(0) != NULL, "Malloc - Basic 9 - Malloc(0)");
+	ok(ft_malloc(293828371837313123) == NULL, "Malloc - Basic 10 - Malloc with too large number");
 }
 
 static void ft_free_tests()
@@ -130,44 +138,46 @@ static void realloc_tests()
 	char *tmp;
 
 	tmp = ft_calloc(6, sizeof(char));
+	show_alloc_mem();
 	ft_memset(tmp, 'B', 5);
 	tmp[5] = '\0';
-	ft_realloc(tmp, sizeof(char) * 3);
+	tmp = ft_realloc(tmp, sizeof(char) * 3);
 	tmp[2] = '\0';
 	ok(tmp[0] == 'B', "Realloc - Basic 1 1");
 	ok(tmp[1] == 'B', "Realloc - Basic 1 2");
 	ok(tmp[2] == '\0', "Realloc - Basic 1 3");
-	ft_realloc(tmp, sizeof(char) * 50);
+	tmp = ft_realloc(tmp, sizeof(char) * 51);
 	tmp[49] = '\0';
 	tmp[30] = 'B';
 	ok(tmp[0] == 'B', "Realloc - Basic 1 4");
 	ok(tmp[30] == 'B', "Realloc - Basic 1 5");
 	ok(tmp[2] == '\0', "Realloc - Basic 1 6");
 	ok(tmp[49] == '\0', "Realloc - Basic 1 7");
+	// ft_free(tmp);
 }
 
 int main()
 {
 	basic_tests();
+	ft_free_all();
 	show_alloc_mem();
-	// ft_free_all();
+
+	ft_free_tests();
+	ft_free_all();
+
+	calloc_tests();
+	ft_free_all();
+
 	show_alloc_mem();
-
-	// ft_free_tests();
-	// ft_free_all();
-
-	// calloc_tests();
-	// ft_free_all();
-
-	// realloc_tests();
-	// ft_free_all();
+	realloc_tests();
+	ft_free_all();
 
 	// mem_saturation_test(TINY_MAX_SIZE / 2, true);
 	// mem_saturation_test(SMALL_MAX_SIZE / 2, true);
 	// mem_saturation_test(SMALL_MAX_SIZE * 4096, true);
 
-	ft_free_all();
 	show_alloc_mem();
+	ft_free_all();
 
 	done_testing();
 	return 0;
