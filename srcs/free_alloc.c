@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 16:58:56 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:17:12 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ extern t_malloc_header *g_alloc_mem[3];
 
 static int follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2)
 {
+	// printf("((void *)ptr + ptr->size + sizeof(t_malloc_header) == (void *)ptr2): %d - ptr: %p - ptr->size: %zu - ptr2: %p - ptr2->size: %zu\n", ((void *)ptr + ptr->size + sizeof(t_malloc_header) == (void *)ptr2), ptr, ptr->size, (void *)ptr2, ptr2->size);
 	if (!(ptr && ptr2 && ptr->next) ||
 		sizeof(t_malloc_header) + ptr->size == (long unsigned int)getpagesize() * TINY_PAGE_SIZE ||
 		sizeof(t_malloc_header) + ptr->size == (long unsigned int)getpagesize() * SMALL_PAGE_SIZE)
@@ -43,6 +44,7 @@ static void defrag(t_malloc_header *start, size_t pagesize, size_t headersize, i
 {
 	if (start && start->free == true)
 	{
+		// printf("startsize: %zu \n", start->size);
 		if (start->prev && start->prev->free == true &&
 			!follows_on_same_page(start->prev, start))
 		{
@@ -62,7 +64,7 @@ static void defrag(t_malloc_header *start, size_t pagesize, size_t headersize, i
 			start->size == pagesize * SMALL_PAGE_SIZE - headersize)
 			unmap_page(start, alloc_type);
 		// else
-		// 	printf("No unmap page - startsize: %zu - pagesize tiny: %zu - headersize: %zu\n", start->size, TINY_PAGE_SIZE * pagesize, headersize);
+			// printf("No unmap page - startsize: %zu - pagesize tiny: %zu - headersize: %zu\n", start->size, TINY_PAGE_SIZE * pagesize, headersize);
 		return;
 	}
 }
@@ -75,7 +77,5 @@ void free_alloc(t_malloc_header *alloc_header, int alloc_mem_index)
 	// ft_putnbr(alloc_header->size);
 	// ft_putstr("\n");
 	alloc_header->free = true;
-	// if (alloc_mem_index == -1)
-	// alloc_mem_index =
 	defrag(alloc_header, getpagesize(), sizeof(t_malloc_header), alloc_mem_index);
 }

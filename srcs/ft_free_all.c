@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 16:39:51 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:17:25 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void ft_free_all(void)
 			ptr = tmp;
 			while (ptr && ((t_malloc_header *)ptr)->free && ((t_malloc_header *)ptr)->next)
 				ptr = ((t_malloc_header *)ptr)->next;
-			free(ptr + sizeof(t_malloc_header));
+			// printf("Ft free all: free %p - size %zu\n", ptr, ((t_malloc_header *)ptr)->size);
+			// ft_free(ptr + sizeof(t_malloc_header));
+			free_alloc(ptr, i);
 			show_alloc_mem();
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/14 18:05:40 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:16:40 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_malloc_header	*append_page_to_list(size_t size, size_t headersize, int 
 		newpage_size = getpagesize() * ((g_alloc_mem_index == 0) ? (TINY_PAGE_SIZE) : (SMALL_PAGE_SIZE));
 	if ((page = mmap(NULL, newpage_size, PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) == MAP_FAILED)
 		return NULL;
-	// printf("New page: %p size: %zu - errno: %d\n", page, newpage_size - headersize, errno);
+	// printf("New page: %p size: %zu - errno: %d\n", page, newpage_size, errno);
 	write_header(page, \
 		(g_alloc_mem_index == 2) ? (false) : (true), \
 		newpage_size - headersize, NULL, g_alloc_mem[g_alloc_mem_index]);
@@ -63,7 +63,7 @@ static void		*reserve_page_mem(size_t size, size_t headersize, int alloc_type)
 			ft_putstr("Return : 0x");
 			ft_putnbr_base((unsigned int)cur_pos, 16);
 			ft_putstr("\n");
-			show_alloc_mem();
+			// show_alloc_mem();
 			return (void *)cur_pos + headersize;
 		}
 		cur_pos = cur_pos->next;
@@ -96,7 +96,7 @@ void			*malloc(size_t size)
 	if (!(page = append_page_to_list(size, headersize, alloc_type)))
 		return NULL;
 	if (alloc_type == 2)
-		return page;
+		return page + headersize;
 	return reserve_page_mem(size, headersize, alloc_type);
 	// if (size > SMALL_MAX_SIZE)
 		// return page + headersize;
