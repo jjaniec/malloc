@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:33:45 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 19:24:06 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void		free(void *ptr)
 	// if (!alloc_header)
 	// 	ft_putstr("Free: header not found\n");
 	free_alloc(alloc_header, i);
+	// show_alloc_mem();
 }

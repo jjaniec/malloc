@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:32:40 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/15 19:24:13 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void	defrag(t_malloc_header *start, size_t pagesize, \
 {
 	if (start && start->free == true)
 	{
-		// printf("startsize: %zu \n", start->size);
 		if (start->prev && start->prev->free == true &&
 			!follows_on_same_page(start->prev, start))
 			return (defrag(start->prev, pagesize, headersize, alloc_type));

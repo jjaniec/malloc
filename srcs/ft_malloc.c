@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:32:05 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/16 12:06:36 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ static t_malloc_header	*append_page_to_list(size_t size, size_t headersize, \
 			((g_alloc_mem_index == 0) ? (TINY_PAGE_SIZE) : (SMALL_PAGE_SIZE));
 	if ((page = mmap(NULL, newpage_size, \
 		PAGE_MMAP_PROT, PAGE_MMAP_FLAGS, 0, 0)) == MAP_FAILED)
+	{
+		ft_putstr("Malloc: mmap returned an error\n");
 		return (NULL);
+	}
 	// printf("New page: %p size: %zu - errno: %d\n", page, newpage_size, errno);
 	write_header(page, \
 		(g_alloc_mem_index == 2) ? (false) : (true), \
@@ -61,6 +64,10 @@ static void				*reserve_page_mem(size_t size, size_t headersize, \
 		}
 		cur_pos = cur_pos->next;
 	}
+	ft_putstr("Return NULL 1\nRequested: ");
+	ft_putnbr(size);
+	ft_putstr("\n");
+	// show_alloc_mem();
 	return (NULL);
 }
 
@@ -79,15 +86,19 @@ void					*malloc(size_t size)
 	// ft_putstr(" - type: ");
 	// ft_putnbr(alloc_type);
 	// ft_putchar('\n');
-	while (size % 16)
-		size++;
 	headersize = sizeof(t_malloc_header);
 	if (alloc_type < 2 && \
 		(addr = reserve_page_mem(size, headersize, alloc_type)))
 		return (addr);
 	if (!(page = append_page_to_list(size, headersize, alloc_type)))
+	{
+		ft_putstr("Return NULL 2\n");
 		return (NULL);
+	}
 	if (alloc_type == 2)
 		return (page + headersize);
-	return (reserve_page_mem(size, headersize, alloc_type));
+	addr = reserve_page_mem(size, headersize, alloc_type);
+	// if (addr && page)
+		// ft_putstr("add page\n");
+	return (addr);
 }
