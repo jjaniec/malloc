@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:21:05 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/16 12:01:20 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,21 @@
 ** Allocations max size per allocation type
 */
 
-# define TINY_MAX_SIZE 256
-# define SMALL_MAX_SIZE 4096
+// # define TINY_MAX_SIZE 256
+// # define SMALL_MAX_SIZE 4096
+
+# define TINY_MAX_SIZE 128
+# define SMALL_MAX_SIZE 2048
 
 /*
 ** Tiny & small pages size ( x * getpagesize() )
 */
 
-# define TINY_PAGE_SIZE 8
-# define SMALL_PAGE_SIZE 24
+// # define TINY_PAGE_SIZE 8
+// # define SMALL_PAGE_SIZE 24
+
+# define TINY_PAGE_SIZE 3
+# define SMALL_PAGE_SIZE 100
 
 /*
 ** Initial number of pages in tiny & small page regions
