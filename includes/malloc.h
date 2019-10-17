@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/16 12:01:20 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:09:44 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@
 // # define TINY_MAX_SIZE 256
 // # define SMALL_MAX_SIZE 4096
 
-# define TINY_MAX_SIZE 128
+// # define TINY_MAX_SIZE 64
+// # define SMALL_MAX_SIZE 2048
+
+# define TINY_MAX_SIZE 64
 # define SMALL_MAX_SIZE 2048
 
 /*
@@ -40,6 +43,9 @@
 
 # define TINY_PAGE_SIZE 3
 # define SMALL_PAGE_SIZE 100
+
+// # define TINY_PAGE_SIZE 1
+// # define SMALL_PAGE_SIZE 2
 
 /*
 ** Initial number of pages in tiny & small page regions

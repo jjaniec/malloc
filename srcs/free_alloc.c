@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 19:24:13 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:27:55 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ extern t_malloc_header *g_alloc_mem[3];
 
 static int	follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2)
 {
-	// printf("((void *)ptr + ptr->size + sizeof(t_malloc_header) == (void *)ptr2): %d - ptr: %p - ptr->size: %zu - ptr2: %p - ptr2->size: %zu\n", ((void *)ptr + ptr->size + sizeof(t_malloc_header) == (void *)ptr2), ptr, ptr->size, (void *)ptr2, ptr2->size);
 	if (!(ptr && ptr2 && ptr->next) ||
 		sizeof(t_malloc_header) + ptr->size == \
 			(long unsigned int)getpagesize() * TINY_PAGE_SIZE ||
@@ -62,8 +61,9 @@ static void	defrag(t_malloc_header *start, size_t pagesize, \
 				start->next->prev = start;
 		}
 		if (alloc_type == 2 ||
-			start->size == pagesize * TINY_PAGE_SIZE - headersize ||
-			start->size == pagesize * SMALL_PAGE_SIZE - headersize)
+			((start->size == pagesize * TINY_PAGE_SIZE - headersize ||
+			start->size == pagesize * SMALL_PAGE_SIZE - headersize) && \
+			(start->next || start->prev)))
 			unmap_page(start, alloc_type);
 		return ;
 	}

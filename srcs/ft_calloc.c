@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 22:07:15 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 19:24:19 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:27:48 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ void	*calloc(size_t nmemb, size_t size)
 {
 	void *ptr;
 
-	// ft_putstr("Calloc ");
-	// ft_putnbr((unsigned long)nmemb * size);
-	// ft_putchar('\n');
-	if (nmemb == 0 || size == 0 || SIZE_MAX / nmemb <= size)
+	if (nmemb == 0 || size == 0)
 	{
 		nmemb = 1;
 		size = 1;

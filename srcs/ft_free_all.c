@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:15:17 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:30:04 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void		ft_free_all(void)
 	int				i;
 	void			*tmp;
 
-	// printf("FT FREE ALL %p - %p - %p\n", g_alloc_mem[0], g_alloc_mem[1], g_alloc_mem[2]);
 	i = -1;
 	while (++i < 3)
 	{

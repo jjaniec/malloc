@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:14:11 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:23:36 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:31:00 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,9 @@ extern t_malloc_header *g_alloc_mem[3];
 
 static void		print_byte_value(char byte)
 {
-	// char		*byte_hex_fmt;
-
 	if (byte < 10)
 		ft_putchar('0');
 	ft_putnbr_base(byte, 16);
-	// byte_hex_fmt = ft_itoa_base(byte, 16);
-	// ft_putstr(byte_hex_fmt);
-	// free(byte_hex_fmt);
 }
 
 static void		print_alloc_data(t_malloc_header *header)
@@ -98,5 +93,4 @@ void			show_alloc_mem(void)
 	show_alloc_mem_list("Small", g_alloc_mem[1]);
 	show_alloc_mem_list("Big", g_alloc_mem[2]);
 	ft_putstr("==========================\n");
-	fflush(stdout);
 }
