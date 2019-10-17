@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:39:01 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 14:28:50 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 23:11:33 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void		*resize_alloc(t_malloc_header *alloc, size_t new_size, \
 	r = NULL;
 	alloc_cur_size = alloc->size;
 	if (alloc_cur_size == new_size)
-		return (alloc);
+		return ((void *)alloc);
 	if (new_size < alloc_cur_size)
 	{
 		if (alloc_cur_size - new_size < headersize)
 			return (alloc);
 		reduce_alloc(alloc, new_size, headersize);
-		r = alloc;
+		r = (void *)alloc;
 	}
 	return (r);
 }
@@ -60,22 +60,25 @@ void			*realloc(void *ptr, size_t size)
 	void			*r;
 	int				i;
 
+	// ft_putstr("realloc\n");
 	r = NULL;
 	while (size % 16)
 		size++;
+	i = 0;
 	if (!ptr)
 		return (malloc(size));
-	i = 0;
 	alloc_header = get_alloc_header(ptr, &i);
 	new_alloc_type = get_alloc_type(size);
+	old_alloc_type = get_alloc_type(alloc_header->size);
 	if (alloc_header && \
-		(old_alloc_type = get_alloc_type(alloc_header->size)) == \
-			new_alloc_type && \
+		old_alloc_type < 2 && \
+		old_alloc_type == new_alloc_type && \
 		(r = resize_alloc(alloc_header, size, sizeof(t_malloc_header))))
-		return (r + sizeof(t_malloc_header));
+		return ((void *)r + sizeof(t_malloc_header));
 	if (alloc_header && (r = malloc(size)))
 	{
-		ft_memcpy(r, ptr, alloc_header->size);
+		ft_memcpy(r, (void *)alloc_header + sizeof(t_malloc_header), \
+			(alloc_header->size > size) ? (size) : (alloc_header->size));
 		free_alloc(alloc_header, i);
 	}
 	return (r);

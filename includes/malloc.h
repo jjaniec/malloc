@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 14:09:44 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 22:59:17 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,24 @@
 ** Allocations max size per allocation type
 */
 
-// # define TINY_MAX_SIZE 256
-// # define SMALL_MAX_SIZE 4096
+# define TINY_MAX_SIZE 256
+# define SMALL_MAX_SIZE 4096
 
 // # define TINY_MAX_SIZE 64
 // # define SMALL_MAX_SIZE 2048
 
-# define TINY_MAX_SIZE 64
-# define SMALL_MAX_SIZE 2048
+// # define TINY_MAX_SIZE 64
+// # define SMALL_MAX_SIZE 2048
 
 /*
 ** Tiny & small pages size ( x * getpagesize() )
 */
 
-// # define TINY_PAGE_SIZE 8
+# define TINY_PAGE_SIZE 8
 // # define SMALL_PAGE_SIZE 24
 
-# define TINY_PAGE_SIZE 3
-# define SMALL_PAGE_SIZE 100
+// # define TINY_PAGE_SIZE 3
+# define SMALL_PAGE_SIZE 60
 
 // # define TINY_PAGE_SIZE 1
 // # define SMALL_PAGE_SIZE 2
@@ -59,12 +59,13 @@
 */
 
 # define PAGE_MMAP_PROT PROT_READ | PROT_WRITE
-# define PAGE_MMAP_FLAGS MAP_ANON | MAP_PRIVATE
+# define PAGE_MMAP_FLAGS MAP_ANONYMOUS | MAP_PRIVATE
 
 //
 # define SHOW_ALLOC_MEM_BYTES_PER_LINE 16
 # define SHOW_ALLOC_MEM_FREE_BLOCKS false
 # define DISABLE_SHOW_ALLOC_DATA true
+# define MALLOC_DEBUG_FD 2
 
 typedef struct				s_malloc_header
 {

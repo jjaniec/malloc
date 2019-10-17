@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 14:29:50 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 23:10:14 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static void				*reserve_page_mem(size_t size, size_t headersize, \
 				cur_pos->size - size - headersize, cur_pos, cur_pos->next);
 			write_header((void *)cur_pos, false, size, \
 				cur_pos->prev, (void *)cur_pos + headersize + size);
+			if (cur_pos->next && cur_pos->next->next) //
+				cur_pos->next->next->prev = cur_pos->next; //
 			return (void *)cur_pos + headersize;
 		}
 		cur_pos = cur_pos->next;
@@ -75,12 +77,8 @@ void					*malloc(size_t size)
 
 	while (size % 16)
 		size++;
-	alloc_type = get_alloc_type(size);
-	// ft_putstr("Malloc ");
-	// ft_putnbr(size);
-	// ft_putstr(" - type: ");
-	// ft_putnbr(alloc_type);
-	// ft_putchar('\n');
+	if ((alloc_type = get_alloc_type(size)) > 2)
+		return (NULL);
 	headersize = sizeof(t_malloc_header);
 	if (alloc_type < 2 && \
 		(addr = reserve_page_mem(size, headersize, alloc_type)))
