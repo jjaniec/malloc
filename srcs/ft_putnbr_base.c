@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 12:17:29 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/15 14:04:51 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/17 16:07:06 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void		ft_putnbr_base(int n, unsigned int base)
 	charset = "0123456789ABCDEF";
 	if (n < 0)
 	{
-		ft_putchar('-');
+		ft_putchar_fd('-', 2);
 		n = -n;
 	}
 	if (n < (int)base)
-		ft_putchar(charset[n]);
+		ft_putchar_fd(charset[n], 2);
 	if (n >= (int)base)
 	{
-		ft_putnbr(n / base);
-		ft_putchar(charset[n % base]);
+		ft_putnbr_fd(n / base, 2);
+		ft_putchar_fd(charset[n % base], 2);
 	}
 }
