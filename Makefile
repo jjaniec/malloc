@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/10/15 14:20:46 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/10/17 14:25:58 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -110,6 +110,17 @@ $(TESTS_EXEC): $(LIBFT) $(OBJ) $(TESTS_OBJ)
 
 tests: CFLAGS += $(COVERAGE_CFLAGS) $(LIBTAP_FLAGS)
 tests: all $(LIBTAP_DIR) $(TESTS_EXEC)
+
+tests_malloc1:
+	git clone https://github.com/mmeisson/tests_malloc.git tests_malloc1
+	make -C tests_malloc1
+
+tests_malloc2:
+	git clone https://github.com/bnoufel/malloc_test.git tests_malloc2
+
+tests_full: all tests_malloc1 tests_malloc2
+	(cd tests_malloc1 && ./test_malloc)
+	(cd tests_malloc2 && ./test.sh --all --debug <<<'9')
 
 coverage: tests
 	gcov $(subst ./objs/log.o,,$(TESTS_SRCS_OBJS_NAME))
