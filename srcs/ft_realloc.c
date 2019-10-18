@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:39:01 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 23:11:33 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/18 18:25:05 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void			*realloc(void *ptr, size_t size)
 		return (malloc(size));
 	alloc_header = get_alloc_header(ptr, &i);
 	new_alloc_type = get_alloc_type(size);
-	old_alloc_type = get_alloc_type(alloc_header->size);
+	if (alloc_header)
+		old_alloc_type = get_alloc_type(alloc_header->size);
 	if (alloc_header && \
 		old_alloc_type < 2 && \
 		old_alloc_type == new_alloc_type && \

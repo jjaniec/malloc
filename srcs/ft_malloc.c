@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 23:10:14 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/18 19:09:13 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static t_malloc_header	*append_page_to_list(size_t size, size_t headersize, \
 	size_t	newpage_size;
 
 	errno = 0;
-	newpage_size = 0;
 	if (g_alloc_mem_index == 2)
 		newpage_size = size + headersize;
 	else
@@ -77,7 +76,7 @@ void					*malloc(size_t size)
 
 	while (size % 16)
 		size++;
-	if ((alloc_type = get_alloc_type(size)) > 2)
+	if (size < 0 || (alloc_type = get_alloc_type(size)) > 2)
 		return (NULL);
 	headersize = sizeof(t_malloc_header);
 	if (alloc_type < 2 && \

@@ -97,13 +97,13 @@ matrix:
       compiler: clang
       env: CXX=clang
 script: >
-  if [ $TRAVIS_OS_NAME == linux ];
-  then ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
-  else ./build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
+  if [ $TRAVIS_OS_NAME == osx ];
+  then ./build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
+  else ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
   fi;
   if [ $TRAVIS_OS_NAME == osx ];
-  then ./libft_malloc.so.tests;
-  else valgrind --leak-check=full ./libft_malloc.so.tests 2> Leaks.log;
+  then make tests_full && ./run.sh ./libft_malloc.so.tests;
+  else ./run.sh ./libft_malloc.so.tests;
   fi;
   r=$?;
   make coverage;

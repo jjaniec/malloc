@@ -6,7 +6,7 @@
 #    By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/05 18:15:37 by jjaniec           #+#    #+#              #
-#    Updated: 2019/10/17 14:25:58 by jjaniec          ###   ########.fr        #
+#    Updated: 2019/10/18 19:27:02 by jjaniec          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,7 @@ $(LNK): $(NAME)
 
 $(TESTS_EXEC): $(LIBFT) $(OBJ) $(TESTS_OBJ)
 	@$(CC) $(CFLAGS) -c $(IFLAGS) $(addprefix $(LIBTAP_DIR),"/tap.c") -o $(addprefix $(LIBTAP_DIR),"/tap.o")
-	@$(CC) $(CFLAGS) $(TESTS_SRCS_OBJS_NAME) $(LIBFT) -o $(TESTS_EXEC) $(LFLAGS)
+	@$(CC) $(CFLAGS) $(TESTS_SRCS_OBJS_NAME) $(LIBFT) -o $(TESTS_EXEC) $(LFLAGS) -L. -lft_malloc
 
 tests: CFLAGS += $(COVERAGE_CFLAGS) $(LIBTAP_FLAGS)
 tests: all $(LIBTAP_DIR) $(TESTS_EXEC)
@@ -119,7 +119,7 @@ tests_malloc2:
 	git clone https://github.com/bnoufel/malloc_test.git tests_malloc2
 
 tests_full: all tests_malloc1 tests_malloc2
-	(cd tests_malloc1 && ./test_malloc)
+	(cd tests_malloc1 && ./run.sh ./test_malloc)
 	(cd tests_malloc2 && ./test.sh --all --debug <<<'9')
 
 coverage: tests
