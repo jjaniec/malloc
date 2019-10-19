@@ -98,11 +98,11 @@ matrix:
       env: CXX=clang
 script: >
   if [ $TRAVIS_OS_NAME == osx ];
-  then ./build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
+  then ./build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" all;
   else ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make CC=$CXX ADDITIONAL_FLAGS="-DCI_TEST=1" tests;
   fi;
   if [ $TRAVIS_OS_NAME == osx ];
-  then make tests_full && ./run.sh ./libft_malloc.so.tests;
+  then make tests_full && make tests && ./run.sh ./libft_malloc.so.tests;
   else ./run.sh ./libft_malloc.so.tests;
   fi;
   r=$?;
