@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 21:37:02 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 22:59:31 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/19 22:37:14 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ static t_malloc_header		*cmp_alloc_list(void *ptr, t_malloc_header *start, \
 	return (NULL);
 }
 
+/*
+** Find corresponding data pointer into an allocation block list
+*/
+
 t_malloc_header				*get_alloc_header(void *ptr, int *alloc_mem_index)
 {
 	t_malloc_header *alloc_header;
@@ -40,12 +44,5 @@ t_malloc_header				*get_alloc_header(void *ptr, int *alloc_mem_index)
 		if (!alloc_header)
 			*(alloc_mem_index) += 1;
 	}
-	// if (!alloc_header)
-	// {
-		// ft_putstr_fd("get_alloc_header: 0x", 2);
-		// ft_putnbr_base((unsigned int)ptr, 16);
-		// ft_putstr_fd("not found\n", 2);
-		// show_alloc_mem();
-	// }
 	return (alloc_header);
 }

@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:14:11 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 16:57:28 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/19 22:38:39 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 extern t_malloc_header *g_alloc_mem[3];
 
+/*
+** Print data of a byte in hex format
+*/
+
 static void		print_byte_value(char byte)
 {
 	if (byte < 10)
 		ft_putchar_fd('0', MALLOC_DEBUG_FD);
-	ft_putnbr_base(byte, 16);
+	ft_putnbr_base_fd(byte, 16, MALLOC_DEBUG_FD);
 }
+
+/*
+** Print data of an allocation
+*/
 
 static void		print_alloc_data(t_malloc_header *header)
 {
@@ -32,9 +40,9 @@ static void		print_alloc_data(t_malloc_header *header)
 	while (i < header->size)
 	{
 		ft_putstr_fd("0x", MALLOC_DEBUG_FD);
-		ft_putnbr_base((unsigned int)header, 16);
+		ft_putnbr_base_fd((unsigned int)header, 16, MALLOC_DEBUG_FD);
 		ft_putstr_fd("+", MALLOC_DEBUG_FD);
-		ft_putnbr_base((unsigned int)i, 10);
+		ft_putnbr_base_fd((unsigned int)i, 10, MALLOC_DEBUG_FD);
 		ft_putstr_fd(":\t", MALLOC_DEBUG_FD);
 		j = SHOW_ALLOC_MEM_BYTES_PER_LINE;
 		line_start_offset = i;
@@ -59,15 +67,15 @@ static void		print_block_info(char *type, t_malloc_header *block)
 {
 	ft_putstr_fd(type, MALLOC_DEBUG_FD);
 	ft_putstr_fd(" block of size: ", MALLOC_DEBUG_FD);
-	ft_putnbr_base((unsigned int)block->size, 10);
+	ft_putnbr_base_fd((unsigned int)block->size, 10, MALLOC_DEBUG_FD);
 	ft_putstr_fd(" @0x", MALLOC_DEBUG_FD);
-	ft_putnbr_base((unsigned int)block, 16);
+	ft_putnbr_base_fd((unsigned int)block, 16, MALLOC_DEBUG_FD);
 	ft_putstr_fd(" - free: ", MALLOC_DEBUG_FD);
 	ft_putstr_fd((block->free) ? ("true") : ("false"), MALLOC_DEBUG_FD);
 	ft_putstr_fd(" prev: 0x", MALLOC_DEBUG_FD);
-	ft_putnbr_base((unsigned int)block->prev, 16);
+	ft_putnbr_base_fd((unsigned int)block->prev, 16, MALLOC_DEBUG_FD);
 	ft_putstr_fd(" - next: 0x", MALLOC_DEBUG_FD);
-	ft_putnbr_base((unsigned int)block->next, 16);
+	ft_putnbr_base_fd((unsigned int)block->next, 16, MALLOC_DEBUG_FD);
 	ft_putstr_fd("\n", MALLOC_DEBUG_FD);
 }
 
@@ -92,9 +100,11 @@ void			show_alloc_mem(void)
 	ft_putstr_fd("pagesize: ", MALLOC_DEBUG_FD);
 	ft_putnbr_fd((long unsigned int)getpagesize(), MALLOC_DEBUG_FD);
 	ft_putstr_fd(" - Max tiny size: ", MALLOC_DEBUG_FD);
-	ft_putnbr_fd((long unsigned int)getpagesize() * TINY_PAGE_SIZE, MALLOC_DEBUG_FD);
+	ft_putnbr_fd((long unsigned int)getpagesize() * TINY_PAGE_SIZE, \
+		MALLOC_DEBUG_FD);
 	ft_putstr_fd(" - Max small size: \n", MALLOC_DEBUG_FD);
-	ft_putnbr_fd((long unsigned int)getpagesize() * SMALL_PAGE_SIZE, MALLOC_DEBUG_FD);
+	ft_putnbr_fd((long unsigned int)getpagesize() * SMALL_PAGE_SIZE, \
+		MALLOC_DEBUG_FD);
 	ft_putstr_fd("==========================\n", MALLOC_DEBUG_FD);
 	show_alloc_mem_list("Tiny", g_alloc_mem[0]);
 	show_alloc_mem_list("Small", g_alloc_mem[1]);
