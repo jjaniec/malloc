@@ -6,13 +6,17 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:33:53 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 14:30:04 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/19 22:28:40 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
 extern t_malloc_header *g_alloc_mem[3];
+
+/*
+** Free all allocations in all pages
+*/
 
 void		ft_free_all(void)
 {

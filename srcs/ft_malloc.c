@@ -6,13 +6,18 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/18 19:09:13 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/19 22:44:03 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
 t_malloc_header *g_alloc_mem[3] = {NULL, NULL, NULL};
+
+/*
+** Append memory page to page list of type given by
+** g_alloc_mem_index
+*/
 
 static t_malloc_header	*append_page_to_list(size_t size, size_t headersize, \
 							int g_alloc_mem_index)
@@ -41,6 +46,10 @@ static t_malloc_header	*append_page_to_list(size_t size, size_t headersize, \
 	return (page);
 }
 
+/*
+** Try to find free place to return in current memory pages
+*/
+
 static void				*reserve_page_mem(size_t size, size_t headersize, \
 							int alloc_type)
 {
@@ -66,6 +75,11 @@ static void				*reserve_page_mem(size_t size, size_t headersize, \
 	}
 	return (NULL);
 }
+
+/*
+** Try to find free place in current memory pages with reserve_page_mem
+** Otherwise, add pages w/ mmap() and return NULL if it fails
+*/
 
 void					*malloc(size_t size)
 {

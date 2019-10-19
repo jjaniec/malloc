@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:48:14 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/17 22:59:17 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/10/19 22:18:35 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,12 @@
 // # define TINY_MAX_SIZE 64
 // # define SMALL_MAX_SIZE 2048
 
-// # define TINY_MAX_SIZE 64
-// # define SMALL_MAX_SIZE 2048
-
 /*
 ** Tiny & small pages size ( x * getpagesize() )
 */
 
 # define TINY_PAGE_SIZE 8
-// # define SMALL_PAGE_SIZE 24
-
-// # define TINY_PAGE_SIZE 3
 # define SMALL_PAGE_SIZE 60
-
-// # define TINY_PAGE_SIZE 1
-// # define SMALL_PAGE_SIZE 2
 
 /*
 ** Initial number of pages in tiny & small page regions
@@ -61,7 +52,6 @@
 # define PAGE_MMAP_PROT PROT_READ | PROT_WRITE
 # define PAGE_MMAP_FLAGS MAP_ANONYMOUS | MAP_PRIVATE
 
-//
 # define SHOW_ALLOC_MEM_BYTES_PER_LINE 16
 # define SHOW_ALLOC_MEM_FREE_BLOCKS false
 # define DISABLE_SHOW_ALLOC_DATA true
@@ -97,6 +87,6 @@ int				get_alloc_type(size_t size);
 void			write_header(void *ptr, bool free, size_t size, \
 					t_malloc_header *prev, t_malloc_header *next);
 
-void			ft_putnbr_base(int n, unsigned int base);
+void			ft_putnbr_base_fd(int n, unsigned int base, int fd);
 
 #endif
