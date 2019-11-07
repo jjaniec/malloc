@@ -6,13 +6,15 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:14:11 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/19 22:38:39 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/11/07 20:21:03 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
 extern t_malloc_header *g_alloc_mem[3];
+
+extern pthread_mutex_t g_lock;
 
 /*
 ** Print data of a byte in hex format
@@ -95,6 +97,7 @@ static void		show_alloc_mem_list(char *type, t_malloc_header *start)
 
 void			show_alloc_mem(void)
 {
+	pthread_mutex_lock(&g_lock);
 	fflush(stdout);
 	ft_putstr_fd("===== show_alloc_mem =====\n", MALLOC_DEBUG_FD);
 	ft_putstr_fd("pagesize: ", MALLOC_DEBUG_FD);
@@ -110,4 +113,5 @@ void			show_alloc_mem(void)
 	show_alloc_mem_list("Small", g_alloc_mem[1]);
 	show_alloc_mem_list("Big", g_alloc_mem[2]);
 	ft_putstr_fd("==========================\n", MALLOC_DEBUG_FD);
+	pthread_mutex_unlock(&g_lock);
 }

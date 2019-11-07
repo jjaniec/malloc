@@ -6,7 +6,7 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:36:57 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/19 22:46:50 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/11/07 20:34:03 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ extern t_malloc_header *g_alloc_mem[3];
 ** otherwise return 0
 */
 
-static int	follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2, size_t pagesize)
+static int	follows_on_same_page(t_malloc_header *ptr, t_malloc_header *ptr2, \
+				size_t pagesize)
 {
 	if (!(ptr && ptr2 && ptr->next) ||
 		sizeof(t_malloc_header) + ptr->size == \
@@ -73,15 +74,16 @@ static void	defrag(t_malloc_header *start, size_t pagesize, \
 	{
 		if (alloc_type != 2)
 		{
-			while (start->prev && start->prev->free && follows_on_same_page(start->prev, start, pagesize))
+			while (start->prev && start->prev->free && \
+				follows_on_same_page(start->prev, start, pagesize))
 				start = start->prev;
-			while (start->next && start->next->free && follows_on_same_page(start, start->next, pagesize))
+			while (start->next && start->next->free && \
+				follows_on_same_page(start, start->next, pagesize))
 				merge_allocs(start, start->next);
 		}
-		if (alloc_type == 2 ||
-			((start->size + headersize == pagesize * TINY_PAGE_SIZE ||
-			start->size + headersize == pagesize * SMALL_PAGE_SIZE) /*&& \
-			(start->next || start->prev)*/))
+		if (alloc_type == 2 || \
+			((start->size + headersize == pagesize * TINY_PAGE_SIZE || \
+			start->size + headersize == pagesize * SMALL_PAGE_SIZE)))
 			unmap_page(start, alloc_type);
 	}
 }

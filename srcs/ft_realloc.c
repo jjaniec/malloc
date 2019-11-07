@@ -6,13 +6,15 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 11:39:01 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/19 22:35:48 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/11/07 20:21:28 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
 extern t_malloc_header *g_alloc_mem[3];
+
+extern pthread_mutex_t g_lock;
 
 /*
 ** Update current block size &
@@ -76,7 +78,7 @@ static void		replace_block(void *new_block, t_malloc_header *alloc_header, \
 ** Reallocate given ptr with a new size and return NULL if it fails
 */
 
-void			*realloc(void *ptr, size_t size)
+static void		*ft_realloc(void *ptr, size_t size)
 {
 	t_malloc_header *alloc_header;
 	int				old_alloc_type;
@@ -101,5 +103,15 @@ void			*realloc(void *ptr, size_t size)
 		return ((void *)r + sizeof(t_malloc_header));
 	if (alloc_header && (r = malloc(size)))
 		replace_block(r, alloc_header, size, i);
+	return (r);
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	void		*r;
+
+	pthread_mutex_lock(&g_lock);
+	r = ft_realloc(ptr, size);
+	pthread_mutex_unlock(&g_lock);
 	return (r);
 }

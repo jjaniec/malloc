@@ -6,13 +6,15 @@
 /*   By: jjaniec <jjaniec@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 17:46:38 by jjaniec           #+#    #+#             */
-/*   Updated: 2019/10/19 22:44:03 by jjaniec          ###   ########.fr       */
+/*   Updated: 2019/11/07 20:34:21 by jjaniec          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 
 t_malloc_header *g_alloc_mem[3] = {NULL, NULL, NULL};
+
+pthread_mutex_t g_lock;
 
 /*
 ** Append memory page to page list of type given by
@@ -67,8 +69,8 @@ static void				*reserve_page_mem(size_t size, size_t headersize, \
 				cur_pos->size - size - headersize, cur_pos, cur_pos->next);
 			write_header((void *)cur_pos, false, size, \
 				cur_pos->prev, (void *)cur_pos + headersize + size);
-			if (cur_pos->next && cur_pos->next->next) //
-				cur_pos->next->next->prev = cur_pos->next; //
+			if (cur_pos->next && cur_pos->next->next)
+				cur_pos->next->next->prev = cur_pos->next;
 			return (void *)cur_pos + headersize;
 		}
 		cur_pos = cur_pos->next;
@@ -81,7 +83,7 @@ static void				*reserve_page_mem(size_t size, size_t headersize, \
 ** Otherwise, add pages w/ mmap() and return NULL if it fails
 */
 
-void					*malloc(size_t size)
+static void				*ft_malloc(size_t size)
 {
 	size_t		headersize;
 	void		*addr;
@@ -102,4 +104,14 @@ void					*malloc(size_t size)
 		return (page + headersize);
 	addr = reserve_page_mem(size, headersize, alloc_type);
 	return (addr);
+}
+
+void					*malloc(size_t size)
+{
+	void		*r;
+
+	pthread_mutex_lock(&g_lock);
+	r = ft_malloc(size);
+	pthread_mutex_unlock(&g_lock);
+	return (r);
 }
